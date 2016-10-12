@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
@@ -8,7 +8,7 @@ RUN ln -sf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y curl sendmail vim-common vim-runtime libpng12-dev libjpeg-dev wget unzip nginx php5-fpm php5-curl php-apc python-setuptools php5-cli php5-gd php5-mysql php5-oauth mysql-client git-core && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl sendmail vim-common vim-runtime libpng-dev libjpeg-dev wget unzip nginx php7.0-fpm php7.0-curl php-apcu python-setuptools php7.0-cli php7.0-gd php7.0-mysql php-oauth mysql-client git-core && rm -rf /var/lib/apt/lists/*
 
 # nginx config
 RUN sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2/" /etc/nginx/nginx.conf
@@ -17,15 +17,15 @@ RUN sed -i -e"s/user www-data/user root/" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # php-fpm config
-RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
-RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php5/fpm/php.ini
-RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php5/fpm/php.ini
-RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf
-RUN sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php5/fpm/pool.d/www.conf
-RUN sed -i -e "s/user\s*=\s*www-data/user = root/g" /etc/php5/fpm/pool.d/www.conf
-RUN sed -i -e "s/group\s*=\s*www-data/group = root/g" /etc/php5/fpm/pool.d/www.conf
-RUN sed -i -e "s/listen.owner\s*=\s*www-data/listen.owner = root/g" /etc/php5/fpm/pool.d/www.conf
-RUN find /etc/php5/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
+RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.0/fpm/php.ini
+RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/7.0/fpm/php.ini
+RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php/7.0/fpm/php.ini
+RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.0/fpm/php-fpm.conf
+RUN sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -e "s/user\s*=\s*www-data/user = root/g" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -e "s/group\s*=\s*www-data/group = root/g" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -e "s/listen.owner\s*=\s*www-data/listen.owner = root/g" /etc/php/7.0/fpm/pool.d/www.conf
+RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
 # nginx site conf
 ADD ./nginx-site.conf /etc/nginx/sites-available/default
