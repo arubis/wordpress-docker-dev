@@ -8,7 +8,7 @@ RUN ln -sf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y curl sendmail vim-common vim-runtime libpng12-dev libjpeg-dev wget unzip nginx php5-fpm php5-curl php-apc python-setuptools php5-cli php5-gd php5-mysql php5-oauth mysql-client git-core && rm -rf /var/lib/apt/lists/* 
+RUN apt-get update && apt-get install -y curl sendmail vim-common vim-runtime libpng12-dev libjpeg-dev wget unzip nginx php5-fpm php5-curl php-apc python-setuptools php5-cli php5-gd php5-mysql php5-oauth mysql-client git-core && rm -rf /var/lib/apt/lists/*
 
 # nginx config
 RUN sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2/" /etc/nginx/nginx.conf
@@ -36,8 +36,8 @@ RUN /usr/bin/easy_install supervisor-stdout
 ADD ./supervisord.conf /etc/supervisord.conf
 
 # install wp-cli
-RUN wget https://github.com/wp-cli/builds/raw/gh-pages/deb/php-wpcli_0.17.1_all.deb
-RUN dpkg -i php-wpcli_0.17.1_all.deb
+RUN wget https://github.com/wp-cli/builds/raw/gh-pages/deb/php-wpcli_0.24.0_all.deb
+RUN dpkg -i php-wpcli_0.24.0_all.deb
 
 # install wp-cli server command
 RUN mkdir -p ~/.wp-cli/commands
@@ -45,9 +45,9 @@ RUN git clone https://github.com/wp-cli/server-command.git ~/.wp-cli/commands/se
 
 VOLUME /var/www/html
 
-ENV WORDPRESS_VERSION 4.2.2
-ENV WORDPRESS_UPSTREAM_VERSION 4.2.2
-ENV WORDPRESS_SHA1 d3a70d0f116e6afea5b850f793a81a97d2115039
+ENV WORDPRESS_VERSION 4.6.1
+ENV WORDPRESS_UPSTREAM_VERSION 4.6.1
+ENV WORDPRESS_SHA1 027e065d30a64720624a7404a1820e6c6fff1202
 
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_UPSTREAM_VERSION}.tar.gz \

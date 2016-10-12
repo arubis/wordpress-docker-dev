@@ -4,6 +4,10 @@ This image is intended for *local development only*. It runs Nginx and PHP-FPM a
 
 This is totally awesome for local theme and plugin development, and the worst of all possible worlds if it happens to end up on a real server, so don't. Just don't. :simple_smile:
 
+## Modifier's Note
+
+This was forked from gravityrail/wordpress in order to update the base wordpress and wp\_cli versions.
+
 ## Usage
 
 For more detail, see this [initial blog post](http://goldsounds.com/archives/2015/04/06/quick-and-easy-wordpress-development-using-docker/) and the follow up where I [enable multi-site](http://goldsounds.com/archives/2015/04/16/docker-for-wordpress-multisite-development/).
@@ -61,7 +65,7 @@ docker-wp plugin install hello-dolly
 Another example - let's create a new plugin!
 
 ```bash
-docker-wp scaffold plugin my_super_plugin --plugin_name="My Super Plugin" 
+docker-wp scaffold plugin my_super_plugin --plugin_name="My Super Plugin"
 ```
 
 AWESOMESAUCE.
